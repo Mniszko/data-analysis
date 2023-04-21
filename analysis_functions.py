@@ -73,7 +73,7 @@ def dopasowanie(B,sdh,h,sig_xx,sig_xy,p0,bounds=([-np.inf, -np.inf], [np.inf, np
     plt.legend()
     plt.show()
 
-def parametry_dopasowania(B,sdh,h,sig_xx,sig_xy,p01,p02,bounds=([-np.inf, -np.inf], [np.inf, np.inf])):
+def parametry_dopasowania(B,sdh,h,sig_xx,sig_xy,p01,p02,bounds1=([-np.inf, -np.inf], [np.inf, np.inf]),bounds2=([-np.inf, -np.inf, -np.inf, -np.inf], [np.inf, np.inf, np.inf, np.inf])):
     """
     funkcja łączy listy danych B i tensora sigma, zostawia tylko pierwsze 0-1.5 T
     dla każdego sigma mapując dane tak, żeby zgadzały się z poprzednimi, następnie
@@ -101,9 +101,9 @@ def parametry_dopasowania(B,sdh,h,sig_xx,sig_xy,p01,p02,bounds=([-np.inf, -np.in
     connected_fit_sigma = np.concatenate((connected_sigma[:len(fit_B)],connected_sigma[len(B):len(B)+len(fit_B)]))
 
     #model 1 nośnikowy
-    par1,cov1 = curve_fit(double_fit_2_model,connected_fit_B,connected_fit_sigma,p0=p01,bounds=bounds)
+    par1,cov1 = curve_fit(double_fit_2_model,connected_fit_B,connected_fit_sigma,p0=p01,bounds=bounds1)
     #model 2 nośnikowy
-    par2,cov2 = curve_fit(double_fit_4_model,connected_fit_B,connected_fit_sigma,p0=p02,bounds=bounds)
+    par2,cov2 = curve_fit(double_fit_4_model,connected_fit_B,connected_fit_sigma,p0=p02,bounds=bounds2)
     return par1, cov1, par2, cov2
 
 def wykres_dopasowania(B,sdh,h,sig_xx,sig_xy,par1,cov1,par2,cov2):
